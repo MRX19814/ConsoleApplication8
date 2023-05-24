@@ -3,22 +3,27 @@ using System.IO;
 
 class FolderSizeCalculator
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        Console.Write("Введите путь к папке:");
-        string folderPath = Console.ReadLine();
-
-        try
+        if (args.Length == 0)
         {
-            long folderSize = CalculateFolderSize(folderPath);
-            Console.WriteLine("Размер папки: " + folderSize + " байт");
+            Console.Write("Введите путь к папке:");
+            var folderPath = Console.ReadLine();
+            CalculateAndPrintFolderSize(folderPath);
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine("Произошла ошибка: " + ex.Message);
+            var folderPath = args[0];
+            CalculateAndPrintFolderSize(folderPath);
         }
 
         Console.ReadLine();
+    }
+
+    static void CalculateAndPrintFolderSize(string folderPath)
+    {
+        var folderSize = CalculateFolderSize(folderPath);
+        Console.WriteLine("Размер папки: " + folderSize + " байт");
     }
 
     static long CalculateFolderSize(string folderPath)
@@ -33,10 +38,10 @@ class FolderSizeCalculator
             long size = 0;
 
             /// Получаем информацию о папке
-            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+            var directoryInfo = new DirectoryInfo(folderPath);
 
             /// Получаем все файлы в папке и суммируем их размер
-            foreach (FileInfo file in directoryInfo.GetFiles("*", SearchOption.AllDirectories))
+            foreach (var file in directoryInfo.GetFiles("*", SearchOption.AllDirectories))
             {
                 size += file.Length;
             }
